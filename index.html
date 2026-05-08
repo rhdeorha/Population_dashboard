@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강원도 인구 대시보드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  font-family:'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  background:linear-gradient(180deg,#0f172a 0%,#1e293b 100%);
+  color:#e2e8f0;
+  letter-spacing:-0.01em;
+  min-height:100vh;
+  padding:32px 20px 60px;
+}
+.wrap{max-width:1100px;margin:0 auto}
+.header{
+  display:flex;align-items:center;gap:14px;
+  padding:20px 0 28px;border-bottom:1px solid #334155;margin-bottom:28px;
+}
+.brand-mark{
+  width:48px;height:48px;border-radius:12px;
+  background:linear-gradient(135deg,#2563eb,#60a5fa);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:22px;
+  box-shadow:0 2px 12px rgba(37,99,235,.4);
+}
+h1{font-size:22px;font-weight:800;color:#f1f5f9;letter-spacing:-0.02em}
+.subtitle{font-size:12px;color:#94a3b8;margin-top:2px;letter-spacing:.3px}
+.intro{
+  font-size:14px;color:#cbd5e1;line-height:1.7;margin-bottom:28px;
+  background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);
+  padding:16px 20px;border-radius:12px;
+}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{
+  display:block;text-decoration:none;color:inherit;
+  background:rgba(255,255,255,.04);border:1px solid #334155;
+  border-radius:14px;padding:20px 22px;
+  transition:all .15s;cursor:pointer;
+}
+.card:hover{
+  background:rgba(37,99,235,.12);border-color:#60a5fa;
+  transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,.2);
+}
+.card.featured{
+  background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(96,165,250,.08));
+  border-color:#60a5fa;
+}
+.card-mark{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:18px;margin-bottom:12px;
+}
+.card-mark.pop{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+.card-mark.nat{background:linear-gradient(135deg,#ec4899,#fb7185)}
+.card-mark.mig{background:linear-gradient(135deg,#0d9488,#34d399)}
+.card-mark.all{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.card-title{font-size:16px;font-weight:700;color:#f1f5f9;margin-bottom:4px}
+.card-version{
+  display:inline-block;font-size:10.5px;color:#93c5fd;
+  background:rgba(37,99,235,.2);padding:2px 8px;border-radius:6px;
+  margin-left:6px;font-weight:600;letter-spacing:.3px;vertical-align:middle;
+}
+.card-desc{font-size:12.5px;color:#94a3b8;line-height:1.6;margin-top:8px}
+.card-meta{
+  font-size:11px;color:#64748b;margin-top:10px;padding-top:10px;
+  border-top:1px solid #334155;display:flex;justify-content:space-between;
+}
+.footer{
+  margin-top:40px;padding-top:20px;border-top:1px solid #334155;
+  font-size:11px;color:#64748b;line-height:1.7;
+}
+.footer a{color:#94a3b8;text-decoration:none}
+.footer a:hover{color:#60a5fa}
+.footer code{
+  background:rgba(0,0,0,.3);padding:1px 6px;border-radius:4px;
+  font-size:10.5px;color:#cbd5e1;font-family:'Consolas','Monaco',monospace;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="brand-mark">江</div>
+    <div>
+      <h1>강원도 인구 대시보드</h1>
+      <div class="subtitle">2013–2025 · 18개 시군 · 188개 읍면동 · KOSIS · MDIS</div>
+    </div>
+  </div>
+
+  <div class="intro">
+    강원도(강원특별자치도)의 <b>총인구·자연증감·인구이동</b>을 종합 분석하는 4개 대시보드입니다.
+    KOSIS 통계표와 통계청 마이크로데이터(MDIS)에 기반하며, 18개 시군 + 188개 읍면동 단위로
+    드릴다운 가능한 GIS 패널과 KOSIS 교차검증 표를 포함합니다.
+  </div>
+
+  <div class="grid">
+
+    <a class="card featured" href="20260507_강원_인구_종합대시보드_v1_2.html">
+      <div class="card-mark all">江</div>
+      <div class="card-title">강원도 인구 종합 대시보드<span class="card-version">v1.2</span></div>
+      <div class="card-desc">총인구 · 자연증감 · 인구이동 3개 탭으로 통합. 단일 화면에서 전체 인구 현황 파악.</div>
+      <div class="card-meta"><span>가장 권장</span><span>탭 전환식</span></div>
+    </a>
+
+    <a class="card" href="20260507_강원도_인구이동_종합대시보드_v7.13.html">
+      <div class="card-mark mig">移</div>
+      <div class="card-title">인구이동 종합 대시보드<span class="card-version">v7.13</span></div>
+      <div class="card-desc">전입·전출·순이동 분석. 사유·연령·성별·가구·월·이동지역 다축 필터. 흐름 지도 + HWPX 보고서 익스포트.</div>
+      <div class="card-meta"><span>DuckDB-WASM 기반</span><span>가장 인터랙티브</span></div>
+    </a>
+
+    <a class="card" href="20260507_강원_총인구_대시보드_v1_8.html">
+      <div class="card-mark pop">人</div>
+      <div class="card-title">총인구 대시보드<span class="card-version">v1.7</span></div>
+      <div class="card-desc">월별 인구·연령 피라미드·소멸위험지수. 5세 연령 구간 + 성별. 시군 → 읍면동 GIS 드릴다운.</div>
+      <div class="card-meta"><span>월 단위 156개 시점</span><span>소멸지수 5단계</span></div>
+    </a>
+
+    <a class="card" href="20260507_강원_자연증감_대시보드_v1_1.html">
+      <div class="card-mark nat">生</div>
+      <div class="card-title">자연증감 대시보드<span class="card-version">v1.0</span></div>
+      <div class="card-desc">출생·사망·자연증감·혼인·이혼. 조출생률·조사망률 (‰). 시군별·읍면동별 TOP10 비교.</div>
+      <div class="card-meta"><span>연 단위 13년</span><span>인구동태 통계</span></div>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    <p>
+      <b>데이터 출처</b> ·
+      KOSIS <code>DT_1B04005N</code> (주민등록인구) ·
+      KOSIS <code>DT_1B8000K</code> (인구동태건수) ·
+      KOSIS <code>DT_1B26001_A01</code> (시군구별 이동자수) ·
+      통계청 MDIS 국내인구이동통계 마이크로데이터
+    </p>
+    <p style="margin-top:8px">
+      <b>지도 경계</b> · <a href="https://github.com/vuski/admdongkor">vuski/admdongkor 2026.4</a> ·
+      <b>레포</b> · <a href="https://github.com/rhdeorha/Population_dashboard">rhdeorha/Population_dashboard</a>
+    </p>
+    <p style="margin-top:8px;color:#475569">
+      ※ 첫 로딩 시 인구이동 대시보드는 21 MB parquet 다운로드로 인해 5~10초 소요됩니다 (한 번만).
+      DuckDB-WASM 5MB도 함께 로드됩니다.
+    </p>
+  </div>
+</div>
+</body>
+</html>
