@@ -126,8 +126,10 @@ body{font-family:'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Malgu
   border:1px solid rgba(37,99,235,.3);color:#93c5fd;font-weight:600;}
 
 .frame-wrap{flex:1;position:relative;overflow:hidden;background:#f5f7fa;}
-.dash-frame{position:absolute;inset:0;width:100%;height:100%;border:none;background:#f5f7fa;display:none;}
-.dash-frame.active{display:block}
+/* v1.4 fix: iframe은 항상 렌더링되어야 Leaflet/Plotly가 정확한 크기를 측정. 시각만 토글 */
+.dash-frame{position:absolute;inset:0;width:100%;height:100%;border:none;background:#f5f7fa;
+  visibility:hidden;pointer-events:none;z-index:0;}
+.dash-frame.active{visibility:visible;pointer-events:auto;z-index:1;}
 
 .err-banner{
   position:fixed;top:16px;left:50%;transform:translateX(-50%);
