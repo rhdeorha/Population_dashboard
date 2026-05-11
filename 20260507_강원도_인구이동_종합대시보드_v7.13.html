@@ -3360,6 +3360,14 @@ sgSel.onchange = function(){
     await window.v7UpdateCh5();
 
     setLoaderMsg('완료', '검증: 2024 전체가구 사회적 순이동 = ' + net.toLocaleString() + '명', 100);
+
+    // v7.13: 통합 대시보드(parent) 가 KPI 계산까지 완료된 것을 알 수 있도록 신호 발신
+    try {
+      if(window.parent && window.parent !== window){
+        window.parent.postMessage({type: 'mig-ready', source: 'mig-v7.13'}, '*');
+      }
+    } catch(_) { /* parent 접근 실패 — 무시 */ }
+
     setTimeout(loaderHide, 600);
 
   } catch(err) {

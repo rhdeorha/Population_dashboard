@@ -360,37 +360,70 @@ async function fetchWithProgress(key, url){
   return buf;
 }
 
+// v1.4: mig iframe이 보내는 postMessage 대기용 (KPI 계산까지 완료 시점)
+const migReady = {resolved: false, resolve: null};
+const migReadyPromise = new Promise(res => { migReady.resolve = res; });
+window.addEventListener('message', (e) => {
+  if(e.data && e.data.type === 'mig-ready' && !migReady.resolved){
+    migReady.resolved = true;
+    migReady.resolve();
+  }
+});
+
 // iframe 로드 (Blob URL 사용)
 function loadIframeWithBlob(key, buf){
   return new Promise((resolve, reject) => {
     setStatus(key, '대시보드 초기화...');
-    setProgress(key, 70);
+    setProgress(key, 65);
     const blob = new Blob([buf], {type:'text/html;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     state.blobUrls[key] = url;
     const iframe = document.getElementById('frame-' + key);
-    let timeoutId = setTimeout(() => {
-      // 50초 안에 onload 안 오면 그래도 진행
+
+    let htmlLoadTimeout = setTimeout(() => {
       console.warn('[v1.4] '+key+' iframe onload 50초 초과 — 강제 진행');
-      finish();
+      htmlLoaded();
     }, 50000);
-    function finish(){
-      clearTimeout(timeoutId);
+
+    // 일반 대시보드(pop, nat): onload면 끝
+    // mig: onload는 단지 HTML 파싱 끝 — DuckDB+parquet+KPI 계산은 그 후 별도로 진행됨
+    //      → postMessage 'mig-ready' 까지 기다림
+    async function htmlLoaded(){
+      clearTimeout(htmlLoadTimeout);
       try { injectIframeStyle(iframe, key); } catch(e) {}
-      setProgress(key, 100);
-      if(key === 'mig'){
-        setStatus(key, '21 MB 데이터 로드 중...');
-        // mig는 추가 21MB parquet을 더 받음 — onload 시점엔 HTML만 로드됨
-        // 실제 DuckDB+parquet은 백그라운드에서 진행
-      } else {
+
+      if(key !== 'mig'){
+        setProgress(key, 100);
         setStatus(key, '완료');
+        setReady(key);
+        resolve();
+        return;
       }
+
+      // mig 전용: DuckDB+parquet+KPI 계산 대기
+      setProgress(key, 80);
+      setStatus(key, 'DuckDB + 21MB parquet 준비 중...');
+
+      // 90초 안에 mig-ready 안 오면 진행 (네트워크 매우 느린 경우 안전망)
+      const migTimeoutId = setTimeout(() => {
+        if(!migReady.resolved){
+          console.warn('[v1.4] mig-ready postMessage 90초 초과 — 강제 진행');
+          migReady.resolved = true;
+          migReady.resolve();
+        }
+      }, 90000);
+
+      await migReadyPromise;
+      clearTimeout(migTimeoutId);
+      setProgress(key, 100);
+      setStatus(key, '완료 (KPI 계산 포함)');
       setReady(key);
       resolve();
     }
-    iframe.onload = finish;
+
+    iframe.onload = htmlLoaded;
     iframe.onerror = (e) => {
-      clearTimeout(timeoutId);
+      clearTimeout(htmlLoadTimeout);
       reject(new Error('iframe 로드 실패'));
     };
     iframe.src = url;
