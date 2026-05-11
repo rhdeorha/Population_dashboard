@@ -97,9 +97,11 @@ body{font-family:'Pretendard Variable','Pretendard','Apple SD Gothic Neo','Malgu
   letter-spacing:.3px;line-height:1.5;
 }
 
-/* ── 메인 UI (로딩 후) ── */
-.main-ui{display:none;flex-direction:column;flex:1;height:100%}
-.main-ui.visible{display:flex}
+/* ── 메인 UI (로딩 후) ──
+   v1.4 fix: 항상 display:flex 상태로 두고 .boot가 z-index로 덮음.
+   이렇게 해야 iframe들이 부팅 중에도 정확한 크기를 가져
+   Leaflet 지도와 Plotly 차트가 올바르게 초기화됨. */
+.main-ui{display:flex;flex-direction:column;flex:1;height:100%}
 
 .tabbar{display:flex;align-items:stretch;background:linear-gradient(180deg,#0f172a 0%,#1e293b 100%);
   color:#e2e8f0;border-bottom:2px solid #1d4ed8;flex-shrink:0;box-shadow:0 2px 8px rgba(15,23,42,.18);}
